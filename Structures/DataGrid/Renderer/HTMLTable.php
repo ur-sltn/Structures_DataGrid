@@ -45,7 +45,7 @@
  */
 
 require_once 'Structures/DataGrid/Renderer.php';
-require_once 'HTML/Table.php';
+//require_once 'HTML/Table.php';
 
 /**
  * HTML Table Rendering Driver
