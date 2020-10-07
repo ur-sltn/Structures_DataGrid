@@ -1,11 +1,11 @@
 <?php
 /**
  * Base abstract class for data source drivers
- * 
+ *
  * PHP version 5
  *
  * LICENSE:
- * 
+ *
  * Copyright (c) 1997-2007, Andrew Nagy <asnagy@webitecture.org>,
  *                          Olivier Guilyardi <olivier@samalyse.com>,
  *                          Mark Wiesemann <wiesemann@php.net>
@@ -18,9 +18,9 @@
  *    * Redistributions of source code must retain the above copyright
  *      notice, this list of conditions and the following disclaimer.
  *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the 
+ *      notice, this list of conditions and the following disclaimer in the
  *      documentation and/or other materials provided with the distribution.
- *    * The names of the authors may not be used to endorse or promote products 
+ *    * The names of the authors may not be used to endorse or promote products
  *      derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
@@ -36,7 +36,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * CVS file id: $Id$
- * 
+ *
  * @version  $Revision$
  * @package  Structures_DataGrid
  * @category Structures
@@ -46,24 +46,24 @@ require_once 'Structures/DataGrid/Exception.php';
 
 /**
  * Base abstract class for DataSource drivers
- * 
+ *
  * SUPPORTED OPTIONS:
  *
  * - fields:            (array) Which data fields to fetch from the datasource.
  *                              An empty array means: all fields.
  *                              Form: array(field1, field2, ...)
- * - primaryKey:        (array) Name(s), or numerical index(es) of the 
- *                              field(s) which contain a unique record 
+ * - primaryKey:        (array) Name(s), or numerical index(es) of the
+ *                              field(s) which contain a unique record
  *                              identifier (only use several fields in case
  *                              of a multiple-fields primary key)
- * - generate_columns:  (bool)  Generate Structures_DataGrid_Column objects 
+ * - generate_columns:  (bool)  Generate Structures_DataGrid_Column objects
  *                              with labels. See the 'labels' option.
- *                              DEPRECATED: 
+ *                              DEPRECATED:
  *                              use Structures_DataGrid::generateColumns() instead
- * - labels:            (array) Data field to column label mapping. Only used 
- *                              when 'generate_columns' is true. 
+ * - labels:            (array) Data field to column label mapping. Only used
+ *                              when 'generate_columns' is true.
  *                              Form: array(field => label, ...)
- *                              DEPRECATED: 
+ *                              DEPRECATED:
  *                              use Structures_DataGrid::generateColumns() instead
  *
  * @author   Olivier Guilyardi <olivier@samalyse.com>
@@ -115,7 +115,7 @@ class Structures_DataGrid_DataSource
      * Adds some default options.
      *
      * This method is meant to be called by drivers. It allows adding some
-     * default options. 
+     * default options.
      *
      * @access protected
      * @param array $options An associative array of the form:
@@ -131,7 +131,7 @@ class Structures_DataGrid_DataSource
     /**
      * Add special driver features
      *
-     * This method is meant to be called by drivers. It allows specifying 
+     * This method is meant to be called by drivers. It allows specifying
      * the special features that are supported by the current driver.
      *
      * @access protected
@@ -143,7 +143,7 @@ class Structures_DataGrid_DataSource
     {
         $this->_features = array_merge($this->_features, $features);
     }
-    
+
     /**
      * Set options
      *
@@ -172,46 +172,47 @@ class Structures_DataGrid_DataSource
      * Generate columns if options are properly set
      *
      * Note: must be called after fetch()
-     * 
+     *
      * @access public
      * @return array Array of Column objects. Empty array if irrelevant.
      * @deprecated This method relates to the deprecated "generate_columns" option.
      */
     function getColumns()
     {
-        $columns = array();
-        if ($this->_options['generate_columns'] 
-            and $fieldList = $this->_options['fields']) {
+        $columns = [];
+
+        if (!empty($this->_options['generate_columns'])
+            && $fieldList = $this->_options['fields']
+        ) {
             include_once 'Structures/DataGrid/Column.php';
-            
+
             foreach ($fieldList as $field) {
                 $label = strtr($field, $this->_options['labels']);
                 $col = new Structures_DataGrid_Column($label, $field, $field);
                 $columns[] = $col;
             }
         }
-        
+
         return $columns;
     }
-    
-    
+
     // Begin driver method prototypes DocBook template
-     
+
     /**#@+
-     * 
-     * This method is public, but please note that it is not intended to be 
-     * called by user-space code. It is meant to be called by the main 
+     *
+     * This method is public, but please note that it is not intended to be
+     * called by user-space code. It is meant to be called by the main
      * Structures_DataGrid class.
      *
-     * It is an abstract method, part of the DataGrid Datasource driver 
+     * It is an abstract method, part of the DataGrid Datasource driver
      * interface, and must/may be overloaded by drivers.
      */
-   
+
     /**
      * Fetching method prototype
      *
-     * When overloaded this method must return an array of records. 
-     * Each record can be either an associative array of field name/value 
+     * When overloaded this method must return an array of records.
+     * Each record can be either an associative array of field name/value
      * pairs, or an object carrying fields as properties.
      *
      * This method must return a PEAR_Error object on failure.
@@ -219,9 +220,9 @@ class Structures_DataGrid_DataSource
      * @abstract
      * @param   integer $offset     Limit offset (starting from 0)
      * @param   integer $len        Limit length
-     * @return  object              PEAR_Error with message 
-     *                              "No data source driver loaded" 
-     * @access  public                          
+     * @return  object              PEAR_Error with message
+     *                              "No data source driver loaded"
+     * @access  public
      */
     function fetch($offset = 0, $len = null)
     {
@@ -231,83 +232,83 @@ class Structures_DataGrid_DataSource
     /**
      * Counting method prototype
      *
-     * Note: must be called before fetch() 
+     * Note: must be called before fetch()
      *
-     * When overloaded, this method must return the total number or records 
+     * When overloaded, this method must return the total number or records
      * or a PEAR_Error object on failure
-     * 
+     *
      * @abstract
-     * @return  object              PEAR_Error with message 
-     *                              "No data source driver loaded" 
-     * @access  public                          
+     * @return  object              PEAR_Error with message
+     *                              "No data source driver loaded"
+     * @access  public
      */
     function count()
     {
         return PEAR::raiseError("No data source driver loaded");
     }
-    
+
     /**
      * Sorting method prototype
      *
-     * When overloaded this method must return true on success or a PEAR_Error 
+     * When overloaded this method must return true on success or a PEAR_Error
      * object on failure.
-     * 
-     * Note: must be called before fetch() 
-     * 
+     *
+     * Note: must be called before fetch()
+     *
      * @abstract
-     * @param   string  $sortSpec   If the driver supports the "multiSort" 
-     *                              feature this can be either a single field 
-     *                              (string), or a sort specification array of 
+     * @param   string  $sortSpec   If the driver supports the "multiSort"
+     *                              feature this can be either a single field
+     *                              (string), or a sort specification array of
      *                              the form: array(field => direction, ...)
      *                              If "multiSort" is not supported, then this
      *                              can only be a string.
      * @param   string  $sortDir    Sort direction: 'ASC' or 'DESC'
-     * @return  object              PEAR_Error with message 
-     *                              "No data source driver loaded" 
-     * @access  public                          
+     * @return  object              PEAR_Error with message
+     *                              "No data source driver loaded"
+     * @access  public
      */
     function sort($sortSpec, $sortDir = null)
     {
         return PEAR::raiseError("No data source driver loaded");
-    }    
-  
+    }
+
     /**
      * Datasource binding method prototype
      *
-     * When overloaded this method must return true on success or a PEAR_Error 
+     * When overloaded this method must return true on success or a PEAR_Error
      * object on failure.
      *
      * @abstract
      * @param   mixed $container The datasource container
      * @param   array $options   Binding options
-     * @return  object           PEAR_Error with message 
-     *                           "No data source driver loaded" 
-     * @access  public                          
+     * @return  object           PEAR_Error with message
+     *                           "No data source driver loaded"
+     * @access  public
      */
     function bind($container, $options = array())
     {
         return PEAR::raiseError("No data source driver loaded");
     }
- 
+
     /**
      * Record insertion method prototype
      *
      * Drivers that support the "writeMode" feature must implement this method.
      *
-     * When overloaded this method must return true on success or a PEAR_Error 
-     * object on failure. 
+     * When overloaded this method must return true on success or a PEAR_Error
+     * object on failure.
      *
      * @abstract
-     * @param   array   $data   Associative array of the form: 
+     * @param   array   $data   Associative array of the form:
      *                          array(field => value, ..)
-     * @return  object          PEAR_Error with message 
-     *                          "No data source driver loaded or write mode not 
+     * @return  object          PEAR_Error with message
+     *                          "No data source driver loaded or write mode not
      *                          supported by the current driver"
-     * @access  public                          
+     * @access  public
      */
     function insert($data)
     {
-        return PEAR::raiseError("No data source driver loaded or write mode not". 
+        return PEAR::raiseError("No data source driver loaded or write mode not".
                                 "supported by the current driver");
     }
 
@@ -335,21 +336,21 @@ class Structures_DataGrid_DataSource
      *
      * Drivers that support the "writeMode" feature must implement this method.
      *
-     * When overloaded this method must return true on success or a PEAR_Error 
+     * When overloaded this method must return true on success or a PEAR_Error
      * object on failure.
      *
      * @abstract
      * @param   array   $key    Unique record identifier
-     * @param   array   $data   Associative array of the form: 
+     * @param   array   $data   Associative array of the form:
      *                          array(field => value, ..)
-     * @return  object          PEAR_Error with message 
-     *                          "No data source driver loaded or write mode 
+     * @return  object          PEAR_Error with message
+     *                          "No data source driver loaded or write mode
      *                          not supported by the current driver"
-     * @access  public                          
+     * @access  public
      */
     function update($key, $data)
     {
-        return PEAR::raiseError("No data source driver loaded or write mode not". 
+        return PEAR::raiseError("No data source driver loaded or write mode not".
                                 "supported by the current driver");
     }
 
@@ -358,19 +359,19 @@ class Structures_DataGrid_DataSource
      *
      * Drivers that support the "writeMode" feature must implement this method.
      *
-     * When overloaded this method must return true on success or a PEAR_Error 
+     * When overloaded this method must return true on success or a PEAR_Error
      * object on failure.
      *
      * @abstract
      * @param   array   $key    Unique record identifier
-     * @return  object          PEAR_Error with message 
-     *                          "No data source driver loaded or write mode 
+     * @return  object          PEAR_Error with message
+     *                          "No data source driver loaded or write mode
      *                          not supported by the current driver"
-     * @access  public                          
+     * @access  public
      */
     function delete($key)
     {
-        return PEAR::raiseError("No data source driver loaded or write mode not". 
+        return PEAR::raiseError("No data source driver loaded or write mode not".
                                 "supported by the current driver");
     }
 
@@ -381,8 +382,8 @@ class Structures_DataGrid_DataSource
      * if needed.
      *
      * @abstract
-     * @return  void 
-     * @access  public                          
+     * @return  void
+     * @access  public
      */
     function free()
     {
@@ -391,7 +392,7 @@ class Structures_DataGrid_DataSource
     /**#@-*/
 
     // End DocBook template
-  
+
     /**
      * List special driver features
      *
@@ -402,19 +403,23 @@ class Structures_DataGrid_DataSource
     {
         return $this->_features;
     }
-   
+
     /**
      * Tell if the driver as a specific feature
      *
      * @param  string $name Feature name
-     * @return bool 
+     * @return bool
      * @access public
      */
     function hasFeature($name)
     {
-        return $this->_features[$name];
+        if (isset($this->_features[$name])) {
+            return $this->_features[$name];
+        }
+
+        return false;
     }
-    
+
     /**
      * Dump the data as returned by fetch().
      *
@@ -438,10 +443,10 @@ class Structures_DataGrid_DataSource
         if (!$columns and !$records) {
             return "<Empty set>\n";
         }
-        
+
         include_once 'Console/Table.php';
         $table = new Console_Table();
-        
+
         $headers = array();
         if ($columns) {
             foreach ($columns as $col) {
@@ -454,11 +459,11 @@ class Structures_DataGrid_DataSource
         }
 
         $table->setHeaders($headers);
-        
+
         foreach ($records as $rec) {
             $table->addRow($rec);
         }
-       
+
         return $table->getTable();
     }
 
@@ -466,7 +471,7 @@ class Structures_DataGrid_DataSource
 
 /**
  * Base abstract class for SQL query based DataSource drivers
- * 
+ *
  * SUPPORTED OPTIONS:
  *
  * - db_options:  (array)  Options for the created database object. This option
@@ -507,7 +512,7 @@ class Structures_DataGrid_DataSource_SQLQuery
 
     /**
      * Total number of rows
-     * 
+     *
      * This property caches the result of count() to avoid running the same
      * database query multiple times.
      *
@@ -543,7 +548,7 @@ class Structures_DataGrid_DataSource_SQLQuery
     function bind($query, $options = array())
     {
         if ($options) {
-            $this->setOptions($options); 
+            $this->setOptions($options);
         }
 
         if (isset($this->_options['dbc']) &&
@@ -634,7 +639,7 @@ class Structures_DataGrid_DataSource_SQLQuery
         // Determine fields to render
         if (!$this->_options['fields'] && count($recordSet)) {
             $this->setOptions(array('fields' => array_keys($recordSet[0])));
-        }                
+        }
 
         return $recordSet;
     }
@@ -694,7 +699,7 @@ class Structures_DataGrid_DataSource_SQLQuery
     }
 
     /**
-     * Disconnect from the database, if needed 
+     * Disconnect from the database, if needed
      *
      * @abstract
      * @return void
@@ -712,7 +717,7 @@ class Structures_DataGrid_DataSource_SQLQuery
      * This can only be called prior to the fetch method.
      *
      * @access  public
-     * @param   mixed   $sortSpec   A single field (string) to sort by, or a 
+     * @param   mixed   $sortSpec   A single field (string) to sort by, or a
      *                              sort specification array of the form:
      *                              array(field => direction, ...)
      * @param   string  $sortDir    Sort direction: 'ASC' or 'DESC'

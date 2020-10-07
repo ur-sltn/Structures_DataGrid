@@ -1,11 +1,11 @@
 <?php
 /**
  * Base class of all Renderer drivers
- * 
+ *
  * PHP version 5
  *
  * LICENSE:
- * 
+ *
  * Copyright (c) 1997-2007, Andrew Nagy <asnagy@webitecture.org>,
  *                          Olivier Guilyardi <olivier@samalyse.com>,
  *                          Mark Wiesemann <wiesemann@php.net>
@@ -19,9 +19,9 @@
  *    * Redistributions of source code must retain the above copyright
  *      notice, this list of conditions and the following disclaimer.
  *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the 
+ *      notice, this list of conditions and the following disclaimer in the
  *      documentation and/or other materials provided with the distribution.
- *    * The names of the authors may not be used to endorse or promote products 
+ *    * The names of the authors may not be used to endorse or promote products
  *      derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
@@ -37,7 +37,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * CSV file id: $Id$
- * 
+ *
  * @version  $Revision$
  * @package  Structures_DataGrid
  * @category Structures
@@ -51,7 +51,7 @@
  *
  * - buildHeader:         (bool)   Whether to build the header.
  * - buildFooter:         (bool)   Whether to build the footer.
- * - fillWithEmptyRows:   (bool)   Ensures that all pages have the same number of 
+ * - fillWithEmptyRows:   (bool)   Ensures that all pages have the same number of
  *                                 rows.
  * - numberAlign:         (bool)   Whether to right-align numeric values.
  * - defaultCellValue:    (string) What value to put by default into empty cells.
@@ -64,7 +64,7 @@
  *                                 This option only affects drivers that support
  *                                 sorting.
  * - encoding:            (string) The content encoding. If the mbstring extension
- *                                 is present the default value is set from 
+ *                                 is present the default value is set from
  *                                 mb_internal_encoding(), otherwise it is ISO-8859-1.
  * - extraVars:           (array)  Variables to be added to the generated HTTP
  *                                 queries.
@@ -73,27 +73,27 @@
  * - columnAttributes:    (array)  Column cells attributes. This is an array of
  *                                 the form:
  *                                 array(fieldName => array(attribute => value, ...) ...)
- *                                 This option is only used by XML/HTML based 
+ *                                 This option is only used by XML/HTML based
  *                                 drivers.
  * - onMove:              (string) Name of a Javascript function to call on
  *                                 onclick/onsubmit events when the user is either paging
- *                                 or sorting the data. This function 
- *                                 receives a single object argument of the 
- *                                 form: { page: <page>, sort: [{field: <field>, 
- *                                 direction: <direction>}, ...], 
- *                                 data: <user_data> }. Remark: setting this 
+ *                                 or sorting the data. This function
+ *                                 receives a single object argument of the
+ *                                 form: { page: <page>, sort: [{field: <field>,
+ *                                 direction: <direction>}, ...],
+ *                                 data: <user_data> }. Remark: setting this
  *                                 option doesn't remove the href attribute,
  *                                 you should return false from your handler
  *                                 function to void it (eg: for AJAX, etc..).
  * - onMoveData:          (string) User data passed in the "data" member of the
  *                                 object argument passed to onMove. No JSON
  *                                 serialization is performed, this is assigned
- *                                 as a raw string to the "data" attribute. 
+ *                                 as a raw string to the "data" attribute.
  *                                 It's up to you to add quotes, slashes, etc...
- * 
+ *
  * --- DRIVER INTERFACE ---
  *
- * Methods (none required):    
+ * Methods (none required):
  *     - Constructor
  *     - setContainer()
  *     - getContainer()
@@ -108,14 +108,14 @@
  *     - flatten()
  *     - render()
  *     - getPaging()  (deprecated)
- * 
- * Properties (all read-only):    
+ *
+ * Properties (all read-only):
  *     - $_columns
  *     - $_columnsNum
  *     - $_currentSort
  *     - $_firstRecord
  *     - $_lastRecord
- *     - $_multiSort 
+ *     - $_multiSort
  *     - $_options
  *     - $_page
  *     - $_pageLimit
@@ -125,14 +125,14 @@
  *     - $_requestPrefix
  *     - $_sortableFields
  *     - $_totalRecordsNum
- *     
+ *
  * Options that drivers may handle:
  *     - encoding
  *     - fillWithEmptyRows
  *     - numberAlign
  *     - extraVars
  *     - excludeVars
- * 
+ *
  * @version  $Revision$
  * @author   Olivier Guilyardi <olivier@samalyse.com>
  * @author   Mark Wiesemann <wiesemann@php.net>
@@ -141,16 +141,16 @@
  * @package  Structures_DataGrid
  * @category Structures
  * @abstract
- */ 
+ */
 class Structures_DataGrid_Renderer
 {
     /**
      * Columns' fields names and labels
-     * 
+     *
      * Drivers can read the content of this property but must not change it.
-     * 
-     * @var array Structure: 
-     *            array(<columnIndex> => array(field => <fieldName>, 
+     *
+     * @var array Structure:
+     *            array(<columnIndex> => array(field => <fieldName>,
      *                                         label=> <label>), ...)
      *            Where <columnIndex> is zero-based
      * @access protected
@@ -161,12 +161,12 @@ class Structures_DataGrid_Renderer
      * Records content
      *
      * Drivers can read the content of this property but must not change it.
-     * 
-     * @var array Structure: 
+     *
+     * @var array Structure:
      *            array(
      *              <rowIndex> => array(
-     *                 <columnIndex> => array(<cellValue>, ...), 
-     *              ...), 
+     *                 <columnIndex> => array(<cellValue>, ...),
+     *              ...),
      *            ...)
      *            Where <rowIndex> and <columnIndex> are zero-based
      * @access protected
@@ -197,7 +197,7 @@ class Structures_DataGrid_Renderer
      * Number of columns
      *
      * Drivers can read the content of this property but must not change it.
-     * 
+     *
      * @var int
      * @access protected
      */
@@ -205,7 +205,7 @@ class Structures_DataGrid_Renderer
 
     /**
      * Number of records in the current page
-     * 
+     *
      * Drivers can read the content of this property but must not change it.
      *
      * @var int
@@ -215,7 +215,7 @@ class Structures_DataGrid_Renderer
 
     /**
      * Total number of records as reported by the datasource
-     * 
+     *
      * Drivers can read the content of this property but must not change it.
      *
      * @var int
@@ -225,29 +225,29 @@ class Structures_DataGrid_Renderer
 
     /**
      * First record number (starting from 1), in the current page
-     * 
+     *
      * Drivers can read the content of this property but must not change it.
      *
      * @var int
      * @access protected
      */
     var $_firstRecord;
-    
+
     /**
      * Last record number (starting from 1), in the current page
-     * 
+     *
      * Drivers can read the content of this property but must not change it.
      *
      * @var int
      * @access protected
      */
     var $_lastRecord;
-    
+
     /**
      * Current page
-     * 
+     *
      * Page number starting from 1.
-     * 
+     *
      * Drivers can read the content of this property but must not change it.
      *
      * @var int
@@ -257,7 +257,7 @@ class Structures_DataGrid_Renderer
 
     /**
      * Number of records per page
-     * 
+     *
      * Drivers can read the content of this property but must not change it.
      *
      * @var int
@@ -267,17 +267,17 @@ class Structures_DataGrid_Renderer
 
     /**
      * Number of pages
-     * 
+     *
      * Drivers can read the content of this property but must not change it.
      *
      * @var int
      * @access protected
      */
     var $_pagesNum;
-    
+
      /**
      * GET/POST/Cookie parameters prefix
-     * 
+     *
      * Drivers can read the content of this property but must not change it.
      *
      * @var string
@@ -287,7 +287,7 @@ class Structures_DataGrid_Renderer
 
     /**
      * Which fields the datagrid may be sorted by
-     * 
+     *
      * Drivers can read the content of this property but must not change it.
      *
      * @var array Field names
@@ -296,10 +296,10 @@ class Structures_DataGrid_Renderer
     var $_sortableFields = array();
 
     /**
-     * The default directions to sort by 
+     * The default directions to sort by
      *
      * Drivers can read the content of this property but must not change it.
-     * 
+     *
      * @var array Structure: array(field => ASC|DESC, ...)
      * @access protected
      */
@@ -307,7 +307,7 @@ class Structures_DataGrid_Renderer
 
     /**
      * Common and driver-specific options
-     * 
+     *
      * Drivers can read the content of this property but must not change it.
      *
      * @var array
@@ -326,11 +326,11 @@ class Structures_DataGrid_Renderer
     var $_features = array();
 
     /**
-     * Columns objects 
-     * 
+     * Columns objects
+     *
      * Beware: this is a private property, it is not meant to be accessed
      * by drivers. Use the $_columns property instead
-     * 
+     *
      * @var array
      * @access private
      * @see Structures_DataGrid_Renderer::_columns
@@ -347,7 +347,7 @@ class Structures_DataGrid_Renderer
 
     /**
      * Cache for the GET parameters that are common to all sorting http queries
-     * 
+     *
      * @var array
      * @access private
      * @see Structures_DataGrid_Renderer::_buildSortingHttpQuery()
@@ -356,20 +356,20 @@ class Structures_DataGrid_Renderer
 
     /**
      * Whether streaming is enabled or not
-     * 
+     *
      * @var bool
      * @access private
      */
     var $_streamingEnabled = false;
-    
+
     /**
      * URL mapper instance, if provided
-     * 
+     *
      * @var object Net_URL_Mapper
      * @access protected
      */
     var $_urlMapper = null;
-    
+
     /**
      * Instantiate the driver and set default options and features
      *
@@ -381,8 +381,8 @@ class Structures_DataGrid_Renderer
     function Structures_DataGrid_Renderer()
     {
         $this->_options = array(
-            
-            /* Options that the drivers may/should handle */    
+
+            /* Options that the drivers may/should handle */
             'encoding'              => 'ISO-8859-1',
             'fillWithEmptyRows'     => false,
             'numberAlign'           => true,
@@ -391,17 +391,17 @@ class Structures_DataGrid_Renderer
             'columnAttributes'      => array(),
 
             /* Options that must not be accessed by drivers */
-            'buildHeader'           => true, 
-            'buildFooter'           => true,  
+            'buildHeader'           => true,
+            'buildFooter'           => true,
             'defaultCellValue'      => null,
             'defaultColumnValues'   => array(),
-            'hideColumnLinks'       => array(), 
+            'hideColumnLinks'       => array(),
             'onMove'                => null,
             'onMoveData'            => '',
         );
 
         $this->_features = array(
-                'streaming' => false, 
+                'streaming' => false,
                 'outputBuffering' => false,
                 'objectPreserving' => false,
         );
@@ -419,7 +419,7 @@ class Structures_DataGrid_Renderer
      * Adds some default options.
      *
      * This method is meant to be called by drivers. It allows adding some
-     * default options. 
+     * default options.
      *
      * @access protected
      * @param array $options An associative array of the from:
@@ -435,7 +435,7 @@ class Structures_DataGrid_Renderer
     /**
      * Add special driver features
      *
-     * This method is meant to be called by drivers. It allows specifying 
+     * This method is meant to be called by drivers. It allows specifying
      * the special features that are supported by the current driver.
      *
      * @access protected
@@ -474,10 +474,10 @@ class Structures_DataGrid_Renderer
 
     /**
      * Provide columns
-     * 
-     * This method is supposed to be called ONLY by the code that loads the 
+     *
+     * This method is supposed to be called ONLY by the code that loads the
      * driver. In most cases, that'll be the Structures_DataGrid class.
-     * 
+     *
      * @param array $columns Array of Structures_DataGrid_Column objects
      * @access public
      */
@@ -485,19 +485,19 @@ class Structures_DataGrid_Renderer
     {
         $this->_columnObjects = $columns;
     }
-  
+
     /**
      * Specify how the datagrid is currently sorted
      *
-     * 
-     * This method is supposed to be called ONLY by the code that loads the 
+     *
+     * This method is supposed to be called ONLY by the code that loads the
      * driver. In most cases, that'll be the Structures_DataGrid class.
-     * 
+     *
      * The multiSort capabilities is related to the multiSort DataSource
      * feature. In short : the DataGrid checks if the DataSource supports
      * multiSort and informs the Renderer about it.
-     * 
-     * @param array $currentSort        Structure: 
+     *
+     * @param array $currentSort        Structure:
      *                                  array(fieldName => direction, ....)
      * @param bool  $multiSortCapable   Whether the backend support sorting by
      *                                  multiple fields
@@ -511,10 +511,10 @@ class Structures_DataGrid_Renderer
 
     /**
      * Specify page and row limits
-     * 
-     * This method is supposed to be called ONLY by the code that loads the 
+     *
+     * This method is supposed to be called ONLY by the code that loads the
      * driver. In most cases, that'll be the Structures_DataGrid class.
-     * 
+     *
      * @param int $currentPage Current page number
      * @param int $rowsPerPage Maximum number of rows per page
      * @param int $totalRowNum Total number of data rows
@@ -538,10 +538,10 @@ class Structures_DataGrid_Renderer
 
     /**
      * Tell the renderer whether streaming is enabled or not
-     * 
-     * This method is supposed to be called ONLY by the code that loads the 
+     *
+     * This method is supposed to be called ONLY by the code that loads the
      * driver. In most cases, that'll be the Structures_DataGrid class.
-     * 
+     *
      * @param int $status Whether streaming is enabled or not
      * @access public
      */
@@ -570,7 +570,7 @@ class Structures_DataGrid_Renderer
      *
      * Drivers should implement this method when they have some kind of support
      * for rendering containers.
-     * 
+     *
      * @abstract
      * @return object Container of the class supported by the driver
      *                or PEAR_Error
@@ -584,12 +584,12 @@ class Structures_DataGrid_Renderer
     /**
      * Create or/and prepare the container
      *
-     * Drivers may optionally implement this method for any pre-build() 
+     * Drivers may optionally implement this method for any pre-build()
      * operations.
      *
-     * For the container support, it is responsible for creating the 
-     * container if it has not already been provided by the user with 
-     * the setContainer() method. It is where preliminary container 
+     * For the container support, it is responsible for creating the
+     * container if it has not already been provided by the user with
+     * the setContainer() method. It is where preliminary container
      * setup should also be done.
      *
      * @abstract
@@ -600,19 +600,19 @@ class Structures_DataGrid_Renderer
     }
 
     /**
-     * Build the header 
+     * Build the header
      *
      * Drivers may optionally implement this method.
      *
      * @abstract
-     * 
-     * @param   array $columns Columns' fields names and labels (This is a 
+     *
+     * @param   array $columns Columns' fields names and labels (This is a
      *                         convenient reference to the $_columns protected
      *                         property)
      * @access  protected
      * @return  void or PEAR_Error
      */
-    function buildHeader($columns) 
+    function buildHeader($columns)
     {
     }
 
@@ -648,7 +648,7 @@ class Structures_DataGrid_Renderer
     /**
      * Build the body
      *
-     * Drivers may overload() this method, if buildRow() and buildEmptyRow() 
+     * Drivers may overload() this method, if buildRow() and buildEmptyRow()
      * are not flexible enough.
      *
      * @access  protected
@@ -680,7 +680,7 @@ class Structures_DataGrid_Renderer
      * For more flexibility, drivers should overload buildBody()
      *
      * @param int   $index Row index (zero-based)
-     * @param array $data  Record data. 
+     * @param array $data  Record data.
      *                     Structure: array(0 => <value0>, 1 => <value1>, ...)
      * @return void or PEAR_Error
      * @access protected
@@ -689,16 +689,16 @@ class Structures_DataGrid_Renderer
     function buildRow($index, $data)
     {
     }
-  
+
     /**
      * Build an empty row
      *
      * Drivers must overload this method if they need to do something with
      * empty rows that remain at the end of the body.
-     * 
+     *
      * This method will only be called if the "fillWithEmptyRows" option is
      * enabled.
-     * 
+     *
      * @param int   $index Row index (zero-based)
      * @return void or PEAR_Error
      * @access protected
@@ -707,7 +707,7 @@ class Structures_DataGrid_Renderer
     function buildEmptyRow($index)
     {
     }
-    
+
     /**
      * Build the footer
      *
@@ -717,14 +717,14 @@ class Structures_DataGrid_Renderer
      * @access  protected
      * @return  void or PEAR_Error
      */
-    function buildFooter() 
+    function buildFooter()
     {
     }
 
     /**
      * Finish building the datagrid.
      *
-     * Drivers may optionally implement this method for any post-build() 
+     * Drivers may optionally implement this method for any post-build()
      * operations.
      *
      * @abstract
@@ -736,23 +736,23 @@ class Structures_DataGrid_Renderer
     }
 
     /**
-     * Retrieve output from the container object 
-     * 
+     * Retrieve output from the container object
+     *
      * Drivers may optionally implement this method.
      *
      * This method is meant to retrieve final output from the container.
-     * 
-     * Usually the container is an object (ex: HTMLTable instance),
-     * and the final output a string. 
      *
-     * The driver knows how to retrieve such final output from a given 
-     * container (ex: HTMLTable::toHTML()), and this is where to do it. 
+     * Usually the container is an object (ex: HTMLTable instance),
+     * and the final output a string.
+     *
+     * The driver knows how to retrieve such final output from a given
+     * container (ex: HTMLTable::toHTML()), and this is where to do it.
      *
      * Sometimes the container may not be an object, but the final output
      * itself. In this case, this method should simply return the container.
-     * 
+     *
      * This method mustn't output anything directly to the standard output.
-     *  
+     *
      * @abstract
      * @return mixed Output
      * @access protected
@@ -764,11 +764,11 @@ class Structures_DataGrid_Renderer
 
     /**
      * Default formatter for all cells
-     * 
+     *
      * Drivers may optionally implement this method.
      *
      * @abstract
-     * @param string  Cell value 
+     * @param string  Cell value
      * @return string Formatted cell value
      * @access protected
      */
@@ -782,7 +782,7 @@ class Structures_DataGrid_Renderer
      *
      * Drivers must not overload this method. Pre and post-build operations
      * can be performed in init() and finalize()
-     * 
+     *
      * @param  array    $chunk     2D array of records
      * @param  integer  $startRow  Starting row number of current chunk
      * @param  boolean  $eof       Whether the current chunk is the last chunk
@@ -797,7 +797,7 @@ class Structures_DataGrid_Renderer
             foreach ($this->_columnObjects as $index => $column) {
                 if (!is_null($column->orderBy)) {
                     $field = $column->orderBy;
-                    if (!in_array($field,$this->_sortableFields) and 
+                    if (!in_array($field,$this->_sortableFields) and
                         !in_array($field, $this->_options['hideColumnLinks'])
                        ) {
                         $this->_sortableFields[] = $field;
@@ -910,9 +910,9 @@ class Structures_DataGrid_Renderer
     /**
      * Returns the output from the renderer (e.g. HTML table, XLS object, ...)
      *
-     * Drivers must not overload this method. Output generation has to be 
+     * Drivers must not overload this method. Output generation has to be
      * implemented in flatten().
-     * 
+     *
      * @access  public
      * @return  mixed    The output from the renderer
      */
@@ -935,7 +935,7 @@ class Structures_DataGrid_Renderer
      *
      * This method may be overloaded by renderer drivers in order to prepare
      * writing to the standard output (like calling header(), etc...).
-     * 
+     *
      * @access  public
      * @return  void or object PEAR_Error
      */
@@ -956,10 +956,10 @@ class Structures_DataGrid_Renderer
      *
      * When a given public method is not implemented/supported by the driver
      * it must return a PEAR_Error object with code DATAGRID_ERROR_UNSUPPORTED.
-     * This is a helper method for generating such PEAR_Error objects. 
+     * This is a helper method for generating such PEAR_Error objects.
      *
      * Example:
-     * 
+     *
      * <code>
      * function anUnsupportedMethod()
      * {
@@ -973,17 +973,17 @@ class Structures_DataGrid_Renderer
      */
     function _noSupport($method)
     {
-        return PEAR::raiseError("The renderer driver class \"" .get_class($this). 
+        return PEAR::raiseError("The renderer driver class \"" .get_class($this).
                                 "\" does not support the $method() method",
                                 DATAGRID_ERROR_UNSUPPORTED);
     }
-    
+
     /**
      * Sets the rendered status.  This can be used to "flush the cache" in case
      * you need to render the datagrid twice with the second time having changes
      *
      * This is quite an obsolete method...
-     * 
+     *
      * @access  public
      * @param   bool        $status     The rendered status of the DataGrid
      */
@@ -993,23 +993,23 @@ class Structures_DataGrid_Renderer
             $this->_isBuilt = false;
         }
         /* What are we supposed to do with $status = true ? */
-    }   
+    }
 
      /**
      * Set the HTTP Request prefix
-     * 
+     *
      * @param string $prefix The prefix string
      * @return void
      * @access public
      */
-    function setRequestPrefix($prefix) 
+    function setRequestPrefix($prefix)
     {
         $this->_requestPrefix = $prefix;
     }
 
     /**
      * Perform record/column to cell intersection and formatting
-     * 
+     *
      * @param  object $column The column object
      * @param  array  $record Array of record values
      * @param  int    $row    The row number of the cell
@@ -1022,7 +1022,7 @@ class Structures_DataGrid_Renderer
         $value = '';
         if (isset($column->formatter) and !empty($column->formatter)) {
             $value = $column->formatter($record, $row, $col);
-        } else if (isset($column->fieldName)) { 
+        } else if (isset($column->fieldName)) {
             $record = (array) $record; // record might be an object
             if (isset($record[$column->fieldName])) {
                 $value = $this->defaultCellFormatter($record[$column->fieldName]);
@@ -1030,15 +1030,15 @@ class Structures_DataGrid_Renderer
         }
 
         if (empty($value) and !is_null($column->autoFillValue)) {
-            $value = $column->autoFillValue; 
+            $value = $column->autoFillValue;
         }
 
         return $value;
     }
 
     /**
-     * Query the grid build status 
-     * 
+     * Query the grid build status
+     *
      * @return bool Whether the grid has already been built or not
      * @access public
      */
@@ -1046,27 +1046,27 @@ class Structures_DataGrid_Renderer
     {
         return $this->_isBuilt;
     }
-    
+
     /**
      * Build an HTTP query for sorting a given column
-     * 
-     * This is a handy method that most drivers can use in order to build 
+     *
+     * This is a handy method that most drivers can use in order to build
      * the HTTP queries that are used to sort columns.
      *
-     * It takes the global "extraVars", "excludeVars" options as well as the 
-     * $_requestPrefix property into account and can also convert the ampersand 
+     * It takes the global "extraVars", "excludeVars" options as well as the
+     * $_requestPrefix property into account and can also convert the ampersand
      * to XML/HTML entities according to the "encoding" option.
      *
      * @param string $field            Sort field name
      * @param string $direction        Sort direction
-     * @param bool   $convertAmpersand Whether to convert ampersands to 
+     * @param bool   $convertAmpersand Whether to convert ampersands to
      *                                 XML/HTML compliant entities
      * @param array  $extraParameters  Optional extra HTTP parameters
      * @return string Query string of the
      * @access protected
-     *             
+     *
      */
-    function _buildSortingHttpQuery($field, $direction, $convertAmpersand = false, 
+    function _buildSortingHttpQuery($field, $direction, $convertAmpersand = false,
                                     $extraParameters = array())
     {
         $prefix = $this->_requestPrefix;
@@ -1108,19 +1108,19 @@ class Structures_DataGrid_Renderer
 
         return $query;
     }
-    
+
     /**
      * Builds a HTTP URL for sorting and paging.
-     * 
+     *
      * It uses NUM and optionally adds a query string with extraVars/GET
      *
      * @param string $field     Sort field name
      * @param string $direction Sort direction
      * @param int    $page      Pager index
-     * 
+     *
      * @return string generated HTTP URL
      */
-    function _buildMapperURL($field, $direction, $page = 1) 
+    function _buildMapperURL($field, $direction, $page = 1)
     {
         if (!empty($direction)) {
             $direction = strtolower($direction);
@@ -1129,7 +1129,7 @@ class Structures_DataGrid_Renderer
         $params = array('page' => $page,
                         'orderBy' => $field,
                         'direction' => $direction);
-        
+
         if (is_null($this->_sortingHttpQueryCommon)) {
             // Build and cache the list of common get parameters
             $prefix = $this->_requestPrefix;
@@ -1144,7 +1144,7 @@ class Structures_DataGrid_Renderer
                 }
             }
         }
-            
+
         return $this->_urlMapper->generate($params, $this->_sortingHttpQueryCommon);
     }
 
@@ -1153,7 +1153,7 @@ class Structures_DataGrid_Renderer
      *
      * @param  string   $page     Page number (can also be "%d" for replacement
      *                            by Pager, etc...)
-     * @param  mixed    $sortSpec Array of fields and directions, or raw 
+     * @param  mixed    $sortSpec Array of fields and directions, or raw
      *                            javascript string
      * @return string             JS function string, semi-colon included
      * @access protected
@@ -1189,17 +1189,21 @@ class Structures_DataGrid_Renderer
     {
         return $this->_features;
     }
-   
+
     /**
      * Tell if the driver as a specific feature
      *
      * @param  string $name Feature name
-     * @return bool 
+     * @return bool
      * @access public
      */
     function hasFeature($name)
     {
-        return $this->_features[$name];
+        if (isset($this->_features[$name])) {
+            return $this->_features[$name];
+        }
+
+        return false;
     }
 
     /**
