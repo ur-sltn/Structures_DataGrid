@@ -1,4 +1,12 @@
 {
+    "name": "pear/structures_datagrid",
+    "license": "New BSD",
+    "description": "More info available on: http://pear.php.net/package/Structures_DataGrid",
+    "support": {
+        "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Structures_DataGrid",
+        "source": "https://github.com/pear/Structures_DataGrid"
+    },
+    "type": "library",
     "authors": [
         {
             "email": "asnagy@webitecture.org",
@@ -21,19 +29,12 @@
             "Structures": "./"
         }
     },
-    "description": "More info available on: http://pear.php.net/package/Structures_DataGrid",
     "include-path": [
         "./"
     ],
-    "license": "New BSD",
-    "name": "pear/structures_datagrid",
-    "support": {
-        "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Structures_DataGrid",
-        "source": "https://github.com/pear/Structures_DataGrid"
-    },
-    "type": "library",
     "require": {
-        "pear/pear_exception": "*"
+        "pear/pear_exception": "*",
+        "pear/html_table": "1.8.*"
     },
     "require-dev": {
         "phpunit/phpunit": "*"
