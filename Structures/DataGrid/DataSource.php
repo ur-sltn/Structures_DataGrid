@@ -224,7 +224,7 @@ class Structures_DataGrid_DataSource
      *                              "No data source driver loaded"
      * @access  public
      */
-    function fetch($offset = 0, $len = null)
+    function fetch($offset = 0, $len = 0)
     {
         return PEAR::raiseError("No data source driver loaded");
     }
@@ -256,18 +256,18 @@ class Structures_DataGrid_DataSource
      * Note: must be called before fetch()
      *
      * @abstract
-     * @param   string  $sortSpec   If the driver supports the "multiSort"
-     *                              feature this can be either a single field
-     *                              (string), or a sort specification array of
-     *                              the form: array(field => direction, ...)
-     *                              If "multiSort" is not supported, then this
-     *                              can only be a string.
-     * @param   string  $sortDir    Sort direction: 'ASC' or 'DESC'
-     * @return  object              PEAR_Error with message
-     *                              "No data source driver loaded"
+     * @param string|array  $sortSpec   If the driver supports the "multiSort"
+     *                                  feature this can be either a single field
+     *                                  (string), or a sort specification array of
+     *                                  the form: array(field => direction, ...)
+     *                                  If "multiSort" is not supported, then this
+     *                                  can only be a string.
+     * @param   string  $sortDir        Sort direction: 'ASC' or 'DESC'
+     * @return  object                  PEAR_Error with message
+     *                                  "No data source driver loaded"
      * @access  public
      */
-    function sort($sortSpec, $sortDir = null)
+    function sort($sortSpec, $sortDir = 'ASC')
     {
         return PEAR::raiseError("No data source driver loaded");
     }
